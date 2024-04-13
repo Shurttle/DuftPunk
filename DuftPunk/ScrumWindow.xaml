@@ -1,0 +1,54 @@
+﻿<Window x:Class="DuftPunk.ScrumWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DuftPunk"
+        mc:Ignorable="d"
+        Title="ScrumWindow" Height="450" Width="800">
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+    </Window.Resources>
+
+    <StackPanel Margin="10">
+        <TextBlock Text="Scrum Board" FontSize="20" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,0,0,20"/>
+
+        <Grid>
+            <TextBox x:Name="taskInput" Width="500" Height="30" HorizontalAlignment="Center" />
+        </Grid>
+
+        <Button x:Name="addTaskButton" Content="Добавить задачу" Width="150" Height="30" Margin="10" HorizontalAlignment="Center" Click="AddTaskButton_Click"/>
+
+        <TabControl Margin="10">
+            <TabItem Header="ToDo">
+                <ListBox x:Name="todoList" Height="250">
+                    <ListBox.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="Удалить" Click="DeleteTask_Click"/>
+                            <MenuItem Header="Переместить в In Progress" Click="MoveTaskInProgress_Click"/>
+                        </ContextMenu>
+                    </ListBox.ContextMenu>
+                </ListBox>
+            </TabItem>
+            <TabItem Header="In Progress">
+                <ListBox x:Name="inProgressList" Height="250">
+                    <ListBox.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="Удалить" Click="DeleteTask_Click"/>
+                            <MenuItem Header="Переместить в Done" Click="MoveTaskDone_Click"/>
+                        </ContextMenu>
+                    </ListBox.ContextMenu>
+                </ListBox>
+            </TabItem>
+            <TabItem Header="Done">
+                <ListBox x:Name="doneList" Height="250">
+                    <ListBox.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="Удалить" Click="DeleteTask_Click"/>
+                        </ContextMenu>
+                    </ListBox.ContextMenu>
+                </ListBox>
+            </TabItem>
+        </TabControl>
+    </StackPanel>
+</Window>

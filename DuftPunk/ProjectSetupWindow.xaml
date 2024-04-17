@@ -21,7 +21,5 @@
             <StackPanel x:Name="panelMethodologies" Margin="10">
             </StackPanel>
         </StackPanel>
-
-        <Button Grid.Row="2" x:Name="btnContinue" Content="Continue" Width="120" Height="40" HorizontalAlignment="Right" Margin="10" Click="BtnContinue_Click" />
     </Grid>
 </Window>

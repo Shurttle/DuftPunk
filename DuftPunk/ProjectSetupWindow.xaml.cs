@@ -36,8 +36,8 @@ namespace DuftPunk
             else
             {
                 AddMethodologyButton("Scrum", () => OpenScrumWindow());
-                //AddMethodologyButton("Gantt Chart", () => OpenGanttChartWindow());
-                //AddMethodologyButton("Kanban", () => OpenKanbanWindow());
+                AddMethodologyButton("Gantt Chart", () => OpenGanttChartWindow());
+                AddMethodologyButton("Kanban", () => OpenKanbanWindow());
             }
         }
 
@@ -54,17 +54,17 @@ namespace DuftPunk
             scrumWindow.ShowDialog();
         }
 
-        //private void OpenGanttChartWindow()
-        //{
-        //    var ganttChartWindow = new GanttChartWindow();
-        //    ganttChartWindow.ShowDialog();
-        //}
+        private void OpenGanttChartWindow()
+        {
+            var ganttChartWindow = new GanttChartWindow();
+            ganttChartWindow.ShowDialog();
+        }
 
-        //private void OpenKanbanWindow()
-        //{
-        //    var kanbanWindow = new KanbanWindow();
-        //    kanbanWindow.ShowDialog();
-        //}
+        private void OpenKanbanWindow()
+        {
+            var kanbanWindow = new KanbanBoardWindow();
+            kanbanWindow.ShowDialog();
+        }
 
         private void BtnContinue_Click(object sender, RoutedEventArgs e)
         {
@@ -85,12 +85,12 @@ namespace DuftPunk
                             case "Scrum":
                                 OpenScrumWindow();
                                 break;
-                            //case "Gantt Chart":
-                            //    OpenGanttChartWindow();
-                            //    break;
-                            //case "Kanban":
-                            //    OpenKanbanWindow();
-                            //    break;
+                            case "Gantt Chart":
+                                OpenGanttChartWindow();
+                                break;
+                            case "Kanban":
+                                OpenKanbanWindow();
+                                break;
                         }
                     }
                 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,19 +20,86 @@ namespace DuftPunk
     /// </summary>
     public partial class KanbanBoardWindow : Window
     {
-
-        private List<string> todoTasks = new List<string>();
-        private List<string> inProgressTasks = new List<string>();
-        private List<string> doneTasks = new List<string>();
+        public ObservableCollection<string> ToDoTasks { get; set; }
+        public ObservableCollection<string> InProgressTasks { get; set; }
+        public ObservableCollection<string> DoneTasks { get; set; }
 
         public KanbanBoardWindow()
         {
             InitializeComponent();
+
+            ToDoTasks = new ObservableCollection<string>();
+            InProgressTasks = new ObservableCollection<string>();
+            DoneTasks = new ObservableCollection<string>();
+
+            DataContext = this;
+            AddTaskButton.Click += AddTaskButton_Click;
         }
 
+        private void TodoList_Drop(object sender, DragEventArgs e)
+        {
+            ListBox listBox = sender as ListBox;
+            if (listBox != null)
+            {
+                ListBoxItem droppedItem = e.Data.GetData(typeof(ListBoxItem)) as ListBoxItem;
+                if (droppedItem != null)
+                {
+                    string task = droppedItem.Content.ToString();
+                    if (InProgressTasks.Contains(task) || DoneTasks.Contains(task))
+                    {
+                        InProgressTasks.Remove(task);
+                        DoneTasks.Remove(task);
+                    }
+                    ToDoTasks.Add(task);
+                }
+            }
+        }
 
+        private void InProgressList_Drop(object sender, DragEventArgs e)
+        {
+            ListBox listBox = sender as ListBox;
+            if (listBox != null)
+            {
+                ListBoxItem droppedItem = e.Data.GetData(typeof(ListBoxItem)) as ListBoxItem;
+                if (droppedItem != null)
+                {
+                    string task = droppedItem.Content.ToString();
+                    if (ToDoTasks.Contains(task) || DoneTasks.Contains(task))
+                    {
+                        ToDoTasks.Remove(task);
+                        DoneTasks.Remove(task);
+                    }
+                    InProgressTasks.Add(task);
+                }
+            }
+        }
 
-        private void ListBox_PreviewMouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private void DoneList_Drop(object sender, DragEventArgs e)
+        {
+            ListBox listBox = sender as ListBox;
+            if (listBox != null)
+            {
+                ListBoxItem droppedItem = e.Data.GetData(typeof(ListBoxItem)) as ListBoxItem;
+                if (droppedItem != null)
+                {
+                    string task = droppedItem.Content.ToString();
+                    if (ToDoTasks.Contains(task) || InProgressTasks.Contains(task))
+                    {
+                        ToDoTasks.Remove(task);
+                        InProgressTasks.Remove(task);
+                    }
+                    DoneTasks.Add(task);
+                }
+            }
+        }
+
+        private void AddTaskButton_Click(object sender, RoutedEventArgs e)
+        {
+            string task = "New Task";
+            ToDoTasks.Add(task);
+        }
+
+        private void ListBox_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             ListBox listBox = sender as ListBox;
             if (listBox != null)
@@ -39,7 +107,43 @@ namespace DuftPunk
                 ListBoxItem draggedItem = FindVisualParent<ListBoxItem>((DependencyObject)e.OriginalSource);
                 if (draggedItem != null)
                 {
-                    DragDrop.DoDragDrop(listBox, draggedItem, System.Windows.DragDropEffects.Move);
+                    draggedItem.IsSelected = true;
+                    DragDrop.DoDragDrop(listBox, draggedItem, DragDropEffects.Move);
+                }
+            }
+        }
+
+        private void ListBox_Drop(object sender, DragEventArgs e)
+        {
+            ListBox listBox = sender as ListBox;
+            if (listBox != null)
+            {
+                ListBoxItem droppedItem = e.Data.GetData(typeof(ListBoxItem)) as ListBoxItem;
+                if (droppedItem != null)
+                {
+                    string task = droppedItem.Content.ToString();
+                    ObservableCollection<string> sourceTasks = null;
+                    ObservableCollection<string> destinationTasks = null;
+
+                    switch (listBox.Name)
+                    {
+                        case "todoList":
+                            sourceTasks = ToDoTasks;
+                            destinationTasks = InProgressTasks;
+                            break;
+                        case "inProgressList":
+                            sourceTasks = InProgressTasks;
+                            destinationTasks = DoneTasks;
+                            break;
+                        case "doneList":                       
+                            return;
+                    }
+
+                    if (sourceTasks != null && destinationTasks != null && !destinationTasks.Contains(task))
+                    {
+                        sourceTasks.Remove(task);
+                        destinationTasks.Add(task);
+                    }
                 }
             }
         }
@@ -48,45 +152,14 @@ namespace DuftPunk
         {
             while (obj != null)
             {
-                if (obj is T parent)
+                T parent = obj as T;
+                if (parent != null)
                 {
                     return parent;
                 }
                 obj = VisualTreeHelper.GetParent(obj);
             }
             return null;
-        }
-
-        private void TodoList_Drop(object sender, System.Windows.DragEventArgs e)
-        {
-            HandleDrop(sender, e, todoList, todoTasks);
-        }
-
-        private void InProgressList_Drop(object sender, System.Windows.DragEventArgs e)
-        {
-            HandleDrop(sender, e, inProgressList, inProgressTasks);
-        }
-
-        private void DoneList_Drop(object sender, System.Windows.DragEventArgs e)
-        {
-            HandleDrop(sender, e, doneList, doneTasks);
-        }
-
-        private void HandleDrop(object sender, System.Windows.DragEventArgs e, ListBox listBox, List<string> taskList)
-        {
-            if (e.Data.GetDataPresent(typeof(ListBoxItem)))
-            {
-                ListBoxItem droppedItem = (ListBoxItem)e.Data.GetData(typeof(ListBoxItem));
-                if (droppedItem != null)
-                {
-                    string task = droppedItem.Content.ToString();
-                    if (!taskList.Contains(task))
-                    {
-                        taskList.Add(task);
-                        listBox.Items.Add(task);
-                    }
-                }
-            }
         }
     }
 }

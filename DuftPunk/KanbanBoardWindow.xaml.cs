@@ -33,69 +33,23 @@ namespace DuftPunk
             DoneTasks = new ObservableCollection<string>();
 
             DataContext = this;
+            todoList.Drop += ListBox_Drop;
+            inProgressList.Drop += ListBox_Drop;
+            doneList.Drop += ListBox_Drop;
+
             AddTaskButton.Click += AddTaskButton_Click;
-        }
+            todoList.MouseDoubleClick += ListBox_MouseDoubleClick;
+            inProgressList.MouseDoubleClick += ListBox_MouseDoubleClick;
+            doneList.MouseDoubleClick += ListBox_MouseDoubleClick;
+            todoList.PreviewMouseLeftButtonDown += ListBox_PreviewMouseLeftButtonDown;
+            inProgressList.PreviewMouseLeftButtonDown += ListBox_PreviewMouseLeftButtonDown;
+            doneList.PreviewMouseLeftButtonDown += ListBox_PreviewMouseLeftButtonDown;
 
-        private void TodoList_Drop(object sender, DragEventArgs e)
-        {
-            ListBox listBox = sender as ListBox;
-            if (listBox != null)
-            {
-                ListBoxItem droppedItem = e.Data.GetData(typeof(ListBoxItem)) as ListBoxItem;
-                if (droppedItem != null)
-                {
-                    string task = droppedItem.Content.ToString();
-                    if (InProgressTasks.Contains(task) || DoneTasks.Contains(task))
-                    {
-                        InProgressTasks.Remove(task);
-                        DoneTasks.Remove(task);
-                    }
-                    ToDoTasks.Add(task);
-                }
-            }
-        }
-
-        private void InProgressList_Drop(object sender, DragEventArgs e)
-        {
-            ListBox listBox = sender as ListBox;
-            if (listBox != null)
-            {
-                ListBoxItem droppedItem = e.Data.GetData(typeof(ListBoxItem)) as ListBoxItem;
-                if (droppedItem != null)
-                {
-                    string task = droppedItem.Content.ToString();
-                    if (ToDoTasks.Contains(task) || DoneTasks.Contains(task))
-                    {
-                        ToDoTasks.Remove(task);
-                        DoneTasks.Remove(task);
-                    }
-                    InProgressTasks.Add(task);
-                }
-            }
-        }
-
-        private void DoneList_Drop(object sender, DragEventArgs e)
-        {
-            ListBox listBox = sender as ListBox;
-            if (listBox != null)
-            {
-                ListBoxItem droppedItem = e.Data.GetData(typeof(ListBoxItem)) as ListBoxItem;
-                if (droppedItem != null)
-                {
-                    string task = droppedItem.Content.ToString();
-                    if (ToDoTasks.Contains(task) || InProgressTasks.Contains(task))
-                    {
-                        ToDoTasks.Remove(task);
-                        InProgressTasks.Remove(task);
-                    }
-                    DoneTasks.Add(task);
-                }
-            }
         }
 
         private void AddTaskButton_Click(object sender, RoutedEventArgs e)
         {
-            string task = "New Task";
+            string task = "Новая задача";
             ToDoTasks.Add(task);
         }
 
@@ -135,7 +89,7 @@ namespace DuftPunk
                             sourceTasks = InProgressTasks;
                             destinationTasks = DoneTasks;
                             break;
-                        case "doneList":                       
+                        case "doneList":
                             return;
                     }
 
@@ -160,6 +114,28 @@ namespace DuftPunk
                 obj = VisualTreeHelper.GetParent(obj);
             }
             return null;
+        }
+
+        private void ListBox_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            ListBox listBox = sender as ListBox;
+            if (listBox != null)
+            {
+                string task = (string)listBox.SelectedItem;
+                if (task != null)
+                {
+                    int index = listBox.Items.IndexOf(task);
+                    if (index != -1)
+                    {
+                        string newTaskName = Microsoft.VisualBasic.Interaction.InputBox("Введите новое название задачи", "Редактировать задачу", task);
+                        if (!string.IsNullOrEmpty(newTaskName))
+                        {
+                            listBox.Items.RemoveAt(index);
+                            listBox.Items.Insert(index, newTaskName);
+                        }
+                    }
+                }
+            }
         }
     }
 }

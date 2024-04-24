@@ -8,4 +8,9 @@
     <UseWPF>true</UseWPF>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="MyPackage.Sample_my1234567890" Version="5.5.55" />
+    <PackageReference Include="MySql.Data" Version="8.3.0" />
+  </ItemGroup>
+
 </Project>

@@ -22,89 +22,57 @@ namespace DuftPunk
     {
         public ProjectSetupWindow()
         {
-            InitializeComponent();         
+            InitializeComponent();
+            UpdateMethodologies();
         }
 
-        private void UpdateMethodologies(bool isSingleUser)
-        {
-            panelMethodologies.Children.Clear();
-
-            if (isSingleUser)
-            {
-                AddMethodologyButton("Scrum", () => OpenScrumWindow());
-            }
-            else
-            {
-                AddMethodologyButton("Scrum", () => OpenScrumWindow());
-                AddMethodologyButton("Gantt Chart", () => OpenGanttChartWindow());
-                AddMethodologyButton("Kanban", () => OpenKanbanWindow());
-            }
-        }
+        private void UpdateMethodologies()
+        {          
+            AddMethodologyButton("Scrum", () => OpenScrumWindow());
+            AddMethodologyButton("Gantt Chart", () => OpenGanttChartWindow());
+            AddMethodologyButton("Kanban", () => OpenKanbanWindow());
+        }     
 
         private void AddMethodologyButton(string content, Action clickAction)
         {
-            var button = new Button { Content = content, Margin = new Thickness(5) };
-            button.Click += (sender, e) => clickAction();
-            panelMethodologies.Children.Add(button);
+            var button = new Button { Content = content, Style = (Style)FindResource("MethodologyButtonStyle") };
+            button.Click += (sender, e) => clickAction();      
         }
 
         private void OpenScrumWindow()
         {
             var scrumWindow = new ScrumWindow();
             scrumWindow.ShowDialog();
+            this.Close();
         }
 
         private void OpenGanttChartWindow()
         {
-            var ganttChartWindow = new GanttChartWindow();
-            ganttChartWindow.ShowDialog();
+            //var ganttChartWindow = new GanttChartWindow(0);
+            //ganttChartWindow.ShowDialog();
+            this.Close();
         }
 
         private void OpenKanbanWindow()
         {
             var kanbanWindow = new KanbanBoardWindow();
             kanbanWindow.ShowDialog();
+            this.Close();
         }
 
-        private void BtnContinue_Click(object sender, RoutedEventArgs e)
+        private void ScrumButton_Click(object sender, RoutedEventArgs e)
         {
-            bool isSingleUser = radioSingleUser.IsChecked ?? true;
-            if (isSingleUser)
-            {
-                OpenScrumWindow();
-            }
-            else
-            {
-                if (panelMethodologies.Children.Count > 0)
-                {
-                    Button selectedMethodologyButton = panelMethodologies.Children[0] as Button;
-                    if (selectedMethodologyButton != null)
-                    {
-                        switch (selectedMethodologyButton.Content.ToString())
-                        {
-                            case "Scrum":
-                                OpenScrumWindow();
-                                break;
-                            case "Gantt Chart":
-                                OpenGanttChartWindow();
-                                break;
-                            case "Kanban":
-                                OpenKanbanWindow();
-                                break;
-                        }
-                    }
-                }
-            }
+            OpenScrumWindow();
         }
 
-        private void RadioSingleUser_Checked(object sender, RoutedEventArgs e)
+        private void GanttChartButton_Click(object sender, RoutedEventArgs e)
         {
-            UpdateMethodologies(true);
+            OpenGanttChartWindow();
         }
 
-        private void RadioMultipleUsers_Checked(object sender, RoutedEventArgs e)
+        private void KanbanButton_Click(object sender, RoutedEventArgs e)
         {
-            UpdateMethodologies(false);
+            OpenKanbanWindow();
         }
     }
 }

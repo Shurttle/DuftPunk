@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
 using System.Text;
@@ -20,97 +21,69 @@ namespace DuftPunk
     /// </summary>
     public partial class ScrumWindow : Window
     {
+        public ObservableCollection<Task> ToDoList { get; set; }
+        public ObservableCollection<Task> InProgressList { get; set; }
+        public ObservableCollection<Task> DoneList { get; set; }
         public ScrumWindow()
         {
             InitializeComponent();
+            InitializeLists();
         }
 
-        public class TaskItem
+           private void InitializeLists()
         {
-            public string Title { get; set; }
-            public string Status { get; set; }
+            ToDoList = new ObservableCollection<Task>();
+            InProgressList = new ObservableCollection<Task>();
+            DoneList = new ObservableCollection<Task>();
+
+            todoList.ItemsSource = ToDoList;
+            inProgressList.ItemsSource = InProgressList;
+            doneList.ItemsSource = DoneList;
         }
-
-
 
         private void AddTaskButton_Click(object sender, RoutedEventArgs e)
         {
-            string taskTitle = taskInput.Text;
-            if (string.IsNullOrWhiteSpace(taskTitle))
+            if (!string.IsNullOrWhiteSpace(taskInput.Text))
             {
-                MessageBox.Show("Пожалуйста, введите название задачи.");
-            }
-            else
-            {
-                ListBoxItem taskItem = new ListBoxItem();
-                taskItem.Content = taskTitle;
-                todoList.Items.Add(taskItem);
-                taskInput.Text = "";
+                ToDoList.Add(new Task { TaskName = taskInput.Text });
+                taskInput.Clear();
             }
         }
 
         private void DeleteTask_Click(object sender, RoutedEventArgs e)
         {
-            MenuItem menuItem = (MenuItem)sender;
-            ContextMenu menu = (ContextMenu)menuItem.Parent;
-            ListBox listBox = (ListBox)menu.PlacementTarget;
-            if (listBox.SelectedItem is ListBoxItem selectedItem)
-            {
-                listBox.Items.Remove(selectedItem);
-            }
+            var item = (sender as MenuItem).DataContext as Task;
+            var list = (sender as MenuItem).Tag as ObservableCollection<Task>;
+            if (item != null && list != null)
+                list.Remove(item);
         }
 
         private void MoveTaskInProgress_Click(object sender, RoutedEventArgs e)
         {
-            MoveTask(todoList, inProgressList);
+            var item = (sender as MenuItem).DataContext as Task;
+            if (item != null)
+            {
+                ToDoList.Remove(item);
+                InProgressList.Add(item);
+            }
         }
 
         private void MoveTaskDone_Click(object sender, RoutedEventArgs e)
         {
-            MoveTask(inProgressList, doneList);
-        }
-
-        private void MoveTask(ListBox fromList, ListBox toList)
-        {
-            if (fromList.SelectedItem is ListBoxItem selectedItem)
+            var item = (sender as MenuItem).DataContext as Task;
+            if (item != null)
             {
-                fromList.Items.Remove(selectedItem);
-                toList.Items.Add(selectedItem);
-            }
-        }
-
-        private void TaskInput_GotFocus(object sender, RoutedEventArgs e)
-        {
-            TextBox textBox = sender as TextBox;
-            if (textBox != null && textBox.Text == "Введите название задачи...")
-            {
-                textBox.Text = string.Empty;
-                textBox.Foreground = new SolidColorBrush(Colors.Black);
-            }
-        }
-
-        private void TaskInput_LostFocus(object sender, RoutedEventArgs e)
-        {
-            TextBox textBox = sender as TextBox;
-            if (textBox != null && string.IsNullOrWhiteSpace(textBox.Text))
-            {
-                textBox.Text = "Введите название задачи...";
-                textBox.Foreground = new SolidColorBrush(Colors.Gray);
-            }
-        }
-
-        public class StringEmptyToVisibilityConverter : IValueConverter
-        {
-            public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-            {
-                var text = value as string;
-                return string.IsNullOrEmpty(text) ? System.Windows.Visibility.Visible : System.Windows.Visibility.Collapsed;
-            }
-
-            public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-            {
-                throw new NotImplementedException();
+                InProgressList.Remove(item);
+                DoneList.Add(item);
             }
         }
     }
+
+    public class Task
+    {
+        public string TaskName { get; set; }
+        public bool IsTaskDone { get; set; }
+    }
 }
+    
+

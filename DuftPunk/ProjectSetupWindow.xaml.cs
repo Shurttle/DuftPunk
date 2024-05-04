@@ -48,8 +48,8 @@ namespace DuftPunk
 
         private void OpenGanttChartWindow()
         {
-            //var ganttChartWindow = new GanttChartWindow(0);
-            //ganttChartWindow.ShowDialog();
+            var ganttChartWindow = new GanttChartWindow();
+            ganttChartWindow.ShowDialog();
             this.Close();
         }
 

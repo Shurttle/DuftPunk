@@ -31,10 +31,19 @@ namespace DuftPunk
         {
             InitializeComponent();
 
+            ToDoTasks = new ObservableCollection<string>();
+            InProgressTasks = new ObservableCollection<string>();
+            DoneTasks = new ObservableCollection<string>();
+
             DataContext = new KanbanBoardViewModel();
         }
 
-        private void ListBox_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            ((KanbanBoardViewModel)DataContext).AddTask();
+        }
+
+        private void ListBox_PreviewMouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             if (sender is FrameworkElement element && e.OriginalSource is FrameworkElement source)
             {
@@ -52,16 +61,15 @@ namespace DuftPunk
             {
                 if (e.Data.GetData(typeof(string)) is string task)
                 {
-
-                    if (ToDoTasks.Contains(task))
+                    if (ToDoListBox.Items.Contains(task))
                     {
-                        ToDoTasks.Remove(task);
-                        InProgressTasks.Add(task);
+                        ToDoListBox.Items.Remove(task);
+                        ((KanbanBoardViewModel)DataContext).MoveToInProgress(task);
                     }
-                    else if (InProgressTasks.Contains(task))
+                    else if (InProgressListBox.Items.Contains(task))
                     {
-                        InProgressTasks.Remove(task);
-                        DoneTasks.Add(task);
+                        InProgressListBox.Items.Remove(task);
+                        ((KanbanBoardViewModel)DataContext).MoveToDone(task);
                     }
                 }
             }
@@ -71,11 +79,35 @@ namespace DuftPunk
         {
             if (sender is ListBox listBox && listBox.SelectedItem is string task)
             {
-                var newTaskName = Microsoft.VisualBasic.Interaction.InputBox("Введите новое название задачи", "Редактировать задачу", task);
+                var newTaskName = Microsoft.VisualBasic.Interaction.InputBox("Введите новое название задачи", "Редактирование задачи", task);
                 if (!string.IsNullOrEmpty(newTaskName))
                 {
                     var viewModel = DataContext as KanbanBoardViewModel;
                     viewModel?.EditTask(task, newTaskName);
+                }
+            }
+        }
+
+        private void ToDoListBoxItem_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (sender is ListBoxItem listBoxItem && listBoxItem.DataContext is string task)
+            {
+                var result = MessageBox.Show($"Хотите ли вы переместить задачу '{task}' в In Progress?", "Move Task", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                if (result == MessageBoxResult.Yes)
+                {
+                    ((KanbanBoardViewModel)DataContext).MoveToInProgress(task);
+                }
+            }
+        }
+
+        private void InProgressListBoxItem_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (sender is ListBoxItem listBoxItem && listBoxItem.DataContext is string task)
+            {
+                var result = MessageBox.Show($"Хотите ли вы переместить задачу '{task}' в Done?", "Move Task", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                if (result == MessageBoxResult.Yes)
+                {
+                    ((KanbanBoardViewModel)DataContext).MoveToDone(task);
                 }
             }
         }
@@ -114,9 +146,14 @@ namespace DuftPunk
             DoneTasks.Remove(task);
         }
 
-        public void AddTask(string task)
+        public void MoveToInProgress(string task)
         {
             InProgressTasks.Add(task);
+        }
+
+        public void MoveToDone(string task)
+        {
+            DoneTasks.Add(task);
         }
 
         public void EditTask(string oldTask, string newTask)

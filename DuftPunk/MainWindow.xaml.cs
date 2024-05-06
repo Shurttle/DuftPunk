@@ -21,18 +21,11 @@ namespace DuftPunk
             InitializeComponent();
         }
 
-        private void btnYes_Click(object sender, RoutedEventArgs e)
+        private void btnStart_Click(object sender, RoutedEventArgs e)
         {
-            LoginWindow loginWindow = new LoginWindow();
-            loginWindow.ShowDialog();
+            ProjectSetupWindow projectSetupWindow = new ProjectSetupWindow();
+            projectSetupWindow.ShowDialog();
             this.Close();
-        }
-
-        private void btnNo_Click(object sender, RoutedEventArgs e)
-        {
-            RegisterWindow registerWindow = new RegisterWindow();
-            registerWindow.ShowDialog();
-            this.Close();
-        }
+        }       
     }
 }

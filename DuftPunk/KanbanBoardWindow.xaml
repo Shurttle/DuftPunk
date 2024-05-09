@@ -58,22 +58,22 @@
         <Border Grid.Column="0" BorderBrush="#E5E7EB" BorderThickness="1" Background="#F3F4F6" CornerRadius="10">
             <StackPanel>
                 <TextBlock Text="To Do" FontSize="18" FontWeight="Bold" Margin="10"/>
-                <ListBox x:Name="ToDoListBox" ItemsSource="{Binding ToDoTasks}" Style="{StaticResource ListBoxStyle}" AllowDrop="True" PreviewMouseLeftButtonDown="ListBox_PreviewMouseLeftButtonDown" Drop="ListBox_Drop" MouseDoubleClick="ListBox_MouseDoubleClick" PreviewMouseRightButtonDown="ToDoListBoxItem_PreviewMouseRightButtonDown"/>
-                <Button Content="Add Task" Style="{StaticResource ButtonStyle}" Command="{Binding AddTaskCommand}" Click="Button_Click"/>
+                <ListBox x:Name="ToDoListBox" ItemsSource="{Binding ToDoTasks}" Style="{StaticResource ListBoxStyle}" AllowDrop="True" PreviewMouseLeftButtonDown="ListBox_PreviewMouseLeftButtonDown" Drop="ListBox_Drop"/>
+                <Button Content="Add Task" Style="{StaticResource ButtonStyle}" Click="Button_Click"/>
             </StackPanel>
         </Border>
 
         <Border Grid.Column="1" BorderBrush="#E5E7EB" BorderThickness="1" Background="#F3F4F6" CornerRadius="10" Margin="20,0">
             <StackPanel>
                 <TextBlock Text="In Progress" FontSize="18" FontWeight="Bold" Margin="10"/>
-                <ListBox x:Name="InProgressListBox" ItemsSource="{Binding InProgressTasks}" Style="{StaticResource ListBoxStyle}" AllowDrop="True" PreviewMouseLeftButtonDown="ListBox_PreviewMouseLeftButtonDown" Drop="ListBox_Drop" MouseDoubleClick="ListBox_MouseDoubleClick" PreviewMouseRightButtonDown="InProgressListBoxItem_PreviewMouseRightButtonDown"/>
+                <ListBox x:Name="InProgressListBox" ItemsSource="{Binding InProgressTasks}" Style="{StaticResource ListBoxStyle}" AllowDrop="True" PreviewMouseLeftButtonDown="ListBox_PreviewMouseLeftButtonDown" Drop="ListBox_Drop"/>
             </StackPanel>
         </Border>
 
         <Border Grid.Column="2" BorderBrush="#E5E7EB" BorderThickness="1" Background="#F3F4F6" CornerRadius="10">
             <StackPanel>
                 <TextBlock Text="Done" FontSize="18" FontWeight="Bold" Margin="10"/>
-                <ListBox ItemsSource="{Binding DoneTasks}" Style="{StaticResource ListBoxStyle}" AllowDrop="False" PreviewMouseLeftButtonDown="ListBox_PreviewMouseLeftButtonDown" Drop="ListBox_Drop" MouseDoubleClick="ListBox_MouseDoubleClick"/>
+                <ListBox ItemsSource="{Binding DoneTasks}" Style="{StaticResource ListBoxStyle}" AllowDrop="False"/>
             </StackPanel>
         </Border>
     </Grid>

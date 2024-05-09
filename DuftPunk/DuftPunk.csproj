@@ -9,6 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="MvvmLightLibs" Version="5.4.1.1" />
     <PackageReference Include="MyPackage.Sample_my1234567890" Version="5.5.55" />
     <PackageReference Include="MySql.Data" Version="8.3.0" />
   </ItemGroup>

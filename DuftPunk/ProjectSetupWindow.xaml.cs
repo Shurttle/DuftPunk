@@ -29,7 +29,7 @@ namespace DuftPunk
         private void UpdateMethodologies()
         {          
             AddMethodologyButton("Scrum", () => OpenScrumWindow());
-            AddMethodologyButton("Sprint", () => OpenSprint());
+            AddMethodologyButton("GanttChartWindow", () => OpenGanttChartWindow());
             AddMethodologyButton("Kanban", () => OpenKanbanWindow());
         }     
 
@@ -46,10 +46,10 @@ namespace DuftPunk
             this.Close();
         }
 
-        private void OpenSprint()
+        private void OpenGanttChartWindow()
         {
-            var openSprint = new Sprint();
-            openSprint.ShowDialog();
+            var openGanttChartWindow = new GanttChartWindow();
+            openGanttChartWindow.ShowDialog();
             this.Close();
         }
 
@@ -67,7 +67,7 @@ namespace DuftPunk
 
         private void GanttChartButton_Click(object sender, RoutedEventArgs e)
         {
-            OpenSprint();
+            OpenGanttChartWindow();
         }
 
         private void KanbanButton_Click(object sender, RoutedEventArgs e)

@@ -96,6 +96,7 @@ namespace DuftPunk
     {
         public string TaskName { get; set; }
         public bool IsTaskDone { get; set; }
+
     }
 }
     

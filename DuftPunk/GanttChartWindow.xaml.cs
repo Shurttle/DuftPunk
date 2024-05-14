@@ -28,15 +28,30 @@ namespace DuftPunk
         {
             InitializeComponent();
             taskListView.ItemsSource = tasks;
-
-            // Добавляем базовые задачи
-            for (int i = 1; i <= 10; i++)
+         
+            for (int i = 1; i <= 5; i++)
             {
                 tasks.Add(new GanttTask { Name = "Task " + i, Duration = 5 });
             }
             taskListView.AddHandler(Slider.ValueChangedEvent, new RoutedEventHandler(DurationSlider_ValueChanged));
-
+            //Loaded += GanttChartWindow_Loaded;
         }
+        //private void GanttChartWindow_Loaded(object sender, RoutedEventArgs e)
+        //{
+        //    for (int i = 0; i < 14; i++)
+        //    {
+        //        Line line = new Line
+        //        {
+        //            X1 = i * 50,
+        //            Y1 = 0,
+        //            X2 = i * 50,
+        //            Y2 = canvas.ActualHeight,
+        //            Stroke = System.Windows.Media.Brushes.Black,
+        //            StrokeThickness = 1
+        //        };
+        //        canvas.Children.Add(line);
+        //    }
+        //}
         private void DrawGanttChart()
         {
             canvas.Children.Clear();
@@ -48,7 +63,7 @@ namespace DuftPunk
 
             foreach (var task in tasks)
             {
-                double width = task.Duration * 20; // Просто для демонстрации
+                double width = task.Duration * 20; 
 
                 System.Windows.Shapes.Rectangle rect = new System.Windows.Shapes.Rectangle
                 {
@@ -81,7 +96,7 @@ namespace DuftPunk
 
         private void DurationSlider_ValueChanged(object sender, RoutedEventArgs e)
         {
-            // Обновляем длительность задачи при изменении ползунка
+        
             Slider slider = (Slider)e.OriginalSource;
             GanttTask task = (GanttTask)slider.DataContext;
             task.Duration = (int)slider.Value;

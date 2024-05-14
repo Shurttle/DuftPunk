@@ -23,8 +23,8 @@ namespace DuftPunk
 
         private void btnStart_Click(object sender, RoutedEventArgs e)
         {
-            ProjectSetupWindow projectSetupWindow = new ProjectSetupWindow();
-            projectSetupWindow.ShowDialog();
+            ProjectManager projectWindow = new ProjectManager();
+            projectWindow.ShowDialog();
             this.Close();
         }       
     }

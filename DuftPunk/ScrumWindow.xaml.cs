@@ -65,6 +65,7 @@ namespace DuftPunk
             {
                 ToDoList.Remove(item);
                 InProgressList.Add(item);
+
             }
         }
 

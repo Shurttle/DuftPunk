@@ -9,8 +9,8 @@
     <Grid>
         <TextBlock Text="Диаграмма Ганта" FontSize="20" FontWeight="Bold" Margin="10" />
 
-        <!-- Canvas для рисования задач -->
-        <Canvas x:Name="ganttCanvas" Margin="10"/>
+        <!-- Canvas для рисования задач --><!--
+        <Canvas x:Name="ganttCanvas" Margin="10"/>-->
 
     </Grid>
 </Window>

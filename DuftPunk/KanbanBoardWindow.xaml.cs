@@ -1,21 +1,8 @@
 ﻿using GalaSoft.MvvmLight;
-using Microsoft.VisualBasic;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 
 namespace DuftPunk
@@ -44,7 +31,6 @@ namespace DuftPunk
             if (sender is ListBox listBox && e.OriginalSource is FrameworkElement source && source.DataContext is string task)
             {
                 DragDrop.DoDragDrop(listBox, task, DragDropEffects.Move);
-                viewModel.RemoveTask(task);
             }
         }
 
@@ -52,15 +38,15 @@ namespace DuftPunk
         {
             if (sender is ListBox destinationListBox && e.Data.GetData(typeof(string)) is string task)
             {
-                if (destinationListBox == ToDoListBox)
-                    viewModel.MoveToInProgress(task);
-                else if (destinationListBox == InProgressListBox)
+                if (destinationListBox == doneListBox)
                     viewModel.MoveToDone(task);
+                else if (destinationListBox == InProgressListBox)
+                    viewModel.MoveToInProgress(task);
             }
         }
     }
 
-    public class KanbanBoardViewModel : ViewModelBase
+    public class KanbanBoardViewModel: ViewModelBase
     {
         public ObservableCollection<string> ToDoTasks { get; } = new ObservableCollection<string>();
         public ObservableCollection<string> InProgressTasks { get; } = new ObservableCollection<string>();
@@ -80,14 +66,6 @@ namespace DuftPunk
             {
                 ToDoTasks.Add(task);
             }
-        }
-
-        public void RemoveTask(string task)
-        {
-            if (ToDoTasks.Contains(task))
-                ToDoTasks.Remove(task);
-            else if (InProgressTasks.Contains(task))
-                InProgressTasks.Remove(task);
         }
 
         public void MoveToInProgress(string task)

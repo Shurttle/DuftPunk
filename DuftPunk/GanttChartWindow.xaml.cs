@@ -28,7 +28,7 @@ namespace DuftPunk
         {
             InitializeComponent();
             taskListView.ItemsSource = tasks;
-         
+
             for (int i = 1; i <= 5; i++)
             {
                 tasks.Add(new GanttTask { Name = "Task " + i, Duration = 5 });
@@ -63,7 +63,7 @@ namespace DuftPunk
 
             foreach (var task in tasks)
             {
-                double width = task.Duration * 20; 
+                double width = task.Duration * 20;
 
                 System.Windows.Shapes.Rectangle rect = new System.Windows.Shapes.Rectangle
                 {
@@ -96,7 +96,7 @@ namespace DuftPunk
 
         private void DurationSlider_ValueChanged(object sender, RoutedEventArgs e)
         {
-        
+
             Slider slider = (Slider)e.OriginalSource;
             GanttTask task = (GanttTask)slider.DataContext;
             task.Duration = (int)slider.Value;
@@ -149,4 +149,3 @@ namespace DuftPunk
 
 
 
-  

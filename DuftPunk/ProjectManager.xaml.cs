@@ -29,9 +29,10 @@ namespace DuftPunk
         }
         private void LoadProjects()
         {
+            //убейте пж
             //projects.Add(new GanttChartProject { Id = 1, Name = "Проект Gantt Chart" });
             //projects.Add(new KanbanBoardProject { Id = 2, Name = "Проект Kanban Board" });
-            //projects.Add(new ScrumProject { Id = 3, Name = "Проект Scrum" });    
+            //projects.Add(new ScrumProject { Id = 3, Name = "Проект Scrum" });
             //projectListBox.ItemsSource = projects;
         }
         private void projectListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)

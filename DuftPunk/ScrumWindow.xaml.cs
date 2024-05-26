@@ -98,6 +98,9 @@ namespace DuftPunk
     {
         public string TaskName { get; set; }
         public bool IsTaskDone { get; set; }
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
+        public string Name { get; set; }
 
     }
 }

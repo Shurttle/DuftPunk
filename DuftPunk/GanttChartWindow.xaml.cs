@@ -14,6 +14,9 @@ using System.Windows.Shapes;
 using System.Drawing;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using LiveCharts;
+using LiveCharts.Wpf;
+using LiveCharts.Defaults;
 
 namespace DuftPunk
 {
@@ -22,130 +25,51 @@ namespace DuftPunk
     /// </summary>
     public partial class GanttChartWindow : Window
     {
-        ObservableCollection<GanttTask> tasks = new ObservableCollection<GanttTask>();
+        ObservableCollection<Task> tasks = new ObservableCollection<Task>();
 
         public GanttChartWindow()
         {
             InitializeComponent();
-            taskListView.ItemsSource = tasks;
-
-            for (int i = 1; i <= 5; i++)
-            {
-                tasks.Add(new GanttTask { Name = "Task " + i, Duration = 5 });
-            }
-            taskListView.AddHandler(Slider.ValueChangedEvent, new RoutedEventHandler(DurationSlider_ValueChanged));
-            //Loaded += GanttChartWindow_Loaded;
+            LoadGanttChart();
         }
-        //private void GanttChartWindow_Loaded(object sender, RoutedEventArgs e)
-        //{
-        //    for (int i = 0; i < 14; i++)
-        //    {
-        //        Line line = new Line
-        //        {
-        //            X1 = i * 50,
-        //            Y1 = 0,
-        //            X2 = i * 50,
-        //            Y2 = canvas.ActualHeight,
-        //            Stroke = System.Windows.Media.Brushes.Black,
-        //            StrokeThickness = 1
-        //        };
-        //        canvas.Children.Add(line);
-        //    }
-        //}
-        private void DrawGanttChart()
+        private void LoadGanttChart()
         {
-            canvas.Children.Clear();
+            var tasks = new List<Task>
+            {
+                new Task { Name = "Организационное собрание", StartDate = new DateTime(2023, 6, 17), EndDate = new DateTime(2023, 6, 24) },
+                new Task { Name = "Разработка документации", StartDate = new DateTime(2023, 6, 24), EndDate = new DateTime(2023, 7, 1) },
+                new Task { Name = "Общая схема", StartDate = new DateTime(2023, 7, 1), EndDate = new DateTime(2023, 12, 1) },
+                new Task { Name = "Разработка модуля 1", StartDate = new DateTime(2023, 12, 1), EndDate = new DateTime(2024, 1, 5) },
+                new Task { Name = "Разработка модуля 2", StartDate = new DateTime(2024, 1, 5), EndDate = new DateTime(2024, 2, 2) },
+                new Task { Name = "Разработка модуля 3", StartDate = new DateTime(2024, 2, 2), EndDate = new DateTime(2024, 3, 9) },
+                new Task { Name = "Ввод данных", StartDate = new DateTime(2024, 3, 9), EndDate = new DateTime(2024, 3, 16) },
+                new Task { Name = "Анализ данных", StartDate = new DateTime(2024, 3, 16), EndDate = new DateTime(2024, 3, 23) },
+                new Task { Name = "Отчет по разработке", StartDate = new DateTime(2024, 3, 23), EndDate = new DateTime(2024, 3, 30) },
+                new Task { Name = "Внедрение", StartDate = new DateTime(2024, 3, 30), EndDate = new DateTime(2024, 4, 6) },
+                new Task { Name = "Итоговый отчет", StartDate = new DateTime(2024, 4, 6), EndDate = new DateTime(2024, 4, 13) },
+                new Task { Name = "Итоговое собрание", StartDate = new DateTime(2024, 4, 13), EndDate = new DateTime(2024, 4, 20) }
+            };
 
-            double taskHeight = 30;
-            double startX = 50;
-            double startY = 50;
-            double lineHeight = 40;
+            var series = new SeriesCollection();
 
             foreach (var task in tasks)
             {
-                double width = task.Duration * 20;
-
-                System.Windows.Shapes.Rectangle rect = new System.Windows.Shapes.Rectangle
+                var taskSeries = new RowSeries
                 {
-                    Width = width,
-                    Height = taskHeight,
-                    Fill = System.Windows.Media.Brushes.LightBlue,
-                    Stroke = System.Windows.Media.Brushes.Black,
-                    StrokeThickness = 1,
-                };
-
-                Canvas.SetLeft(rect, startX);
-                Canvas.SetTop(rect, startY + (tasks.IndexOf(task) * lineHeight));
-
-                canvas.Children.Add(rect);
-
-                TextBlock textBlock = new TextBlock
-                {
-                    Text = task.Name,
-                    TextWrapping = TextWrapping.Wrap,
-                    Width = width,
-                    TextAlignment = TextAlignment.Center
-                };
-
-                Canvas.SetLeft(textBlock, startX);
-                Canvas.SetTop(textBlock, startY + (tasks.IndexOf(task) * lineHeight) + 5);
-
-                canvas.Children.Add(textBlock);
-            }
-        }
-
-        private void DurationSlider_ValueChanged(object sender, RoutedEventArgs e)
-        {
-
-            Slider slider = (Slider)e.OriginalSource;
-            GanttTask task = (GanttTask)slider.DataContext;
-            task.Duration = (int)slider.Value;
-
-            DrawGanttChart();
-        }
-
-        public class GanttTask : INotifyPropertyChanged
-        {
-            private string name;
-            public string Name
-            {
-                get { return name; }
-                set
-                {
-                    if (name != value)
+                    Title = task.Name,
+                    Values = new ChartValues<DateTimePoint>
                     {
-                        name = value;
-                        NotifyPropertyChanged("Name");
+                        new DateTimePoint(task.StartDate, tasks.IndexOf(task)),
+                        new DateTimePoint(task.EndDate, tasks.IndexOf(task))
                     }
-                }
+                };
+                series.Add(taskSeries);
             }
 
-            private int duration;
-            public int Duration
-            {
-                get { return duration; }
-                set
-                {
-                    if (duration != value)
-                    {
-                        duration = value;
-                        NotifyPropertyChanged("Duration");
-                    }
-                }
-            }
+            GanttChart.Series = series;
 
-            public event PropertyChangedEventHandler PropertyChanged;
-
-            private void NotifyPropertyChanged(string propertyName)
-            {
-                if (PropertyChanged != null)
-                {
-                    PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-                }
-            }
+            GanttChart.AxisX[0].LabelFormatter = value => new DateTime((long)value).ToString("dd MMM");
+            GanttChart.AxisY[0].Labels = tasks.Select(t => t.Name).ToArray();
         }
     }
 }
-
-
-

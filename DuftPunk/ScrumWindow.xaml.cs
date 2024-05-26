@@ -24,10 +24,13 @@ namespace DuftPunk
         public ObservableCollection<Task> ToDoList { get; set; }
         public ObservableCollection<Task> InProgressList { get; set; }
         public ObservableCollection<Task> DoneList { get; set; }
-        public ScrumWindow()
+
+        private ProjectManager project;
+        public ScrumWindow(ProjectManager project)
         {
             InitializeComponent();
             InitializeLists();
+            this.project = project;
         }
 
            private void InitializeLists()

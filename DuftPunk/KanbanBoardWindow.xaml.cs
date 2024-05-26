@@ -13,12 +13,17 @@ namespace DuftPunk
     public partial class KanbanBoardWindow : Window
     {
         private readonly KanbanBoardViewModel viewModel;
-
-        public KanbanBoardWindow()
+        private ProjectManager project;
+        public KanbanBoardWindow(ProjectManager project)
         {
             InitializeComponent();
             viewModel = new KanbanBoardViewModel();
             DataContext = viewModel;
+            this.project = project;
+        }
+
+        public KanbanBoardWindow(ProjectManager.Project kanbanProject)
+        {
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)

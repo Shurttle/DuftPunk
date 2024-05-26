@@ -21,49 +21,66 @@ namespace DuftPunk
     /// </summary>
     public partial class ProjectManager : Window
     {
-        //private ObservableCollection<Project> projects = new ObservableCollection<Project>();
+        public class Project
+        {
+            public int Id { get; set; }
+            public string Name { get; set; }
+            public string Type { get; set; }
+        }
         public ProjectManager()
         {
             InitializeComponent();
             LoadProjects();
         }
-        private void LoadProjects()
-        {
-            //убейте пж
-            //projects.Add(new GanttChartProject { Id = 1, Name = "Проект Gantt Chart" });
-            //projects.Add(new KanbanBoardProject { Id = 2, Name = "Проект Kanban Board" });
-            //projects.Add(new ScrumProject { Id = 3, Name = "Проект Scrum" });
-            //projectListBox.ItemsSource = projects;
-        }
-        private void projectListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            //Project selectedProject = (Project)projectListBox.SelectedItem;
 
-            //if (selectedProject != null)
-            //{
-            //    switch (selectedProject)
-            //    {
-            //        case GanttChartProject _:
-            //            GanttChartWindow ganttChartWindow = new GanttChartWindow(selectedProject);
-            //            ganttChartWindow.Show();
-            //            break;
-            //        case KanbanBoardProject _:
-            //            KanbanBoardWindow kanbanBoardWindow = new KanbanBoardWindow(selectedProject);
-            //            kanbanBoardWindow.Show();
-            //            break;
-            //        case ScrumProject _:
-            //            ScrumWindow scrumWindow = new ScrumWindow(selectedProject);
-            //            scrumWindow.Show();
-            //            break;
-            //    }
-            //}
+        private void OpenScrumWindow(object sender, RoutedEventArgs e)
+        {
+            var scrumProject = new Project { Name = "Scrum Project", Type = "Scrum" };
+            SaveProjectToDatabase(scrumProject);
+            var window = new ScrumWindow(scrumProject);
+            window.Show();
+            this.Close();
+        }
+
+        private void OpenGanttChartWindow(object sender, RoutedEventArgs e)
+        {
+            var ganttProject = new Project { Name = "Gantt Chart Project", Type = "Gantt" };
+            SaveProjectToDatabase(ganttProject);
+            var window = new GanttChartWindow(ganttProject);
+            window.Show();
+            this.Close();
+        }
+
+        private void OpenKanbanBoardWindow(object sender, RoutedEventArgs e)
+        {
+            var kanbanProject = new Project { Name = "Kanban Board Project", Type = "Kanban" };
+            SaveProjectToDatabase(kanbanProject);
+            var window = new KanbanBoardWindow(kanbanProject);
+            window.Show();
+            this.Close();
         }
 
         private void AddTask_Click(object sender, RoutedEventArgs e)
         {
             ProjectSetupWindow projectSetupWindow = new ProjectSetupWindow();
             projectSetupWindow.ShowDialog();
-            this.Close();
         }
+
+        //private void SaveProjectToDatabase(Project project)
+        //{
+        //    var connectionString = "your_connection_string"; // Укажите вашу строку подключения к БД
+        //    using (var connection = new MySqlConnection(connectionString))
+        //    {
+        //        connection.Open();
+        //        string query = "INSERT INTO Projects (Name, Type) VALUES (@Name, @Type)";
+        //        using (var command = new MySqlCommand(query, connection))
+        //        {
+        //            command.Parameters.AddWithValue("@Name", project.Name);
+        //            command.Parameters.AddWithValue("@Type", project.Type);
+        //            command.ExecuteNonQuery();
+        //        }
+        //    }
+        //}
+
     }
 }

@@ -26,11 +26,12 @@ namespace DuftPunk
     public partial class GanttChartWindow : Window
     {
         ObservableCollection<Task> tasks = new ObservableCollection<Task>();
-
-        public GanttChartWindow()
+        private ProjectManager project;
+        public GanttChartWindow(ProjectManager project)
         {
             InitializeComponent();
             LoadGanttChart();
+            this.project = project;
         }
         private void LoadGanttChart()
         {

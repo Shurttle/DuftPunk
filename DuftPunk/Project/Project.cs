@@ -11,6 +11,7 @@ namespace DuftPunk.Project
     {
         public int Id { get; set; }
         public string Name { get; set; }
+        public string Type { get; set; } 
     }
 
     // Модель данных для проекта Gantt Chart

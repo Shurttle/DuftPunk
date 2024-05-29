@@ -25,12 +25,12 @@ namespace DuftPunk
         public ObservableCollection<Task> InProgressList { get; set; }
         public ObservableCollection<Task> DoneList { get; set; }
 
-        private ProjectManager project;
-        public ScrumWindow(ProjectManager project)
+        //private ProjectManager project;
+        public ScrumWindow(/*ProjectManager project*/)
         {
             InitializeComponent();
             InitializeLists();
-            this.project = project;
+            //this.project = project;
         }
 
            private void InitializeLists()
@@ -51,12 +51,16 @@ namespace DuftPunk
                 ToDoList.Add(new Task { TaskName = taskInput.Text });
                 taskInput.Clear();
             }
+            else
+            {
+                MessageBox.Show("Пожалуйста, введите название задачи.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         private void DeleteTask_Click(object sender, RoutedEventArgs e)
         {
             var item = (sender as MenuItem).DataContext as Task;
-            var list = (sender as MenuItem).Tag as ObservableCollection<Task>;
+            var list = GetParentListBox(sender as MenuItem);
             if (item != null && list != null)
                 list.Remove(item);
         }
@@ -68,7 +72,6 @@ namespace DuftPunk
             {
                 ToDoList.Remove(item);
                 InProgressList.Add(item);
-
             }
         }
 
@@ -81,28 +84,33 @@ namespace DuftPunk
                 DoneList.Add(item);
             }
         }
-    }
-    public class TaskModel
-    {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public DateTime StartDate { get; set; }
-        public DateTime EndDate { get; set; }
 
-        public TaskModel(string name, DateTime startDate, DateTime endDate)
+        private ObservableCollection<Task> GetParentListBox(MenuItem menuItem)
         {
-            Name = name;
-            StartDate = startDate;
-            EndDate = endDate;
+            if (menuItem.Parent is ContextMenu contextMenu)
+            {
+                if (contextMenu.PlacementTarget is ListBox listBox)
+                {
+                    if (listBox.ItemsSource is ObservableCollection<Task> list)
+                    {
+                        return list;
+                    }
+                }
+            }
+            return null;
         }
-    }
+        private void BackButton_Click(object sender, RoutedEventArgs e)
+        {
+            ProjectSetupWindow projectSetupWindow = new ProjectSetupWindow();
+            projectSetupWindow.Show();
+            this.Close();
+        }
+    }    
 
     public class Task
     {
         public string TaskName { get; set; }
-        public bool IsTaskDone { get; set; }
-        public DateTime StartDate { get; set; }
-        public DateTime EndDate { get; set; }
+        public bool IsTaskDone { get; set; }      
         public string Name { get; set; }
 
     }

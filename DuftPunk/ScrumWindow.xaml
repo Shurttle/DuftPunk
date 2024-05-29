@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:DuftPunk"
         mc:Ignorable="d"
         Title="ScrumWindow" Height="450" Width="800">
-    <Window.Resources>
+     <Window.Resources>
         <Style TargetType="Button" x:Key="ButtonStyle">
             <Setter Property="Margin" Value="5"/>
             <Setter Property="Padding" Value="10"/>
@@ -77,12 +77,15 @@
     </Window.Resources>
 
     <StackPanel Margin="10">
+        <Button x:Name="backButton" Content="Назад" Style="{StaticResource ButtonStyle}" Width="100" Height="30" Margin="10" HorizontalAlignment="Left" Click="BackButton_Click"/>
+
         <Border Background="#cb77f2" Margin="10" Padding="10" CornerRadius="5">
             <TextBlock Text="Scrum Board" FontSize="20" Foreground="White" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,0,0,20"/>
         </Border>
 
         <Grid>
             <TextBox x:Name="taskInput" Width="500" Height="30" HorizontalAlignment="Center" />
+            <TextBlock x:Name="taskInputPlaceholder" Text="Введите задачу..." Foreground="Gray" VerticalAlignment="Center" HorizontalAlignment="Center" IsHitTestVisible="False"/>
         </Grid>
 
         <Button x:Name="addTaskButton" Content="Добавить задачу" Style="{StaticResource ButtonStyle}" Width="150" Height="30" Margin="10" HorizontalAlignment="Center" Click="AddTaskButton_Click"/>

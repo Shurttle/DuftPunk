@@ -25,52 +25,85 @@ namespace DuftPunk
     /// </summary>
     public partial class GanttChartWindow : Window
     {
-        ObservableCollection<Task> tasks = new ObservableCollection<Task>();
-        private ProjectManager project;
-        public GanttChartWindow(ProjectManager project)
+        ObservableCollection<Taskg> tasks = new ObservableCollection<Taskg>();
+        //private ProjectManager project;
+        public GanttChartWindow(/*ProjectManager project*/)
         {
             InitializeComponent();
             LoadGanttChart();
-            this.project = project;
+            //this.project = project;
+            //var tasks = new List<Taskg>
+            //{
+            //   new Taskg { Name = "", StartDate = new DateTime(), EndDate = new DateTime() },
+            //};
         }
+
+        private void BackButton_Click(object sender, RoutedEventArgs e)
+        {
+            ProjectSetupWindow projectSetupWindow = new ProjectSetupWindow();
+            projectSetupWindow.Show();
+            Close();
+        }
+
         private void LoadGanttChart()
         {
-            var tasks = new List<Task>
-            {
-                new Task { Name = "Организационное собрание", StartDate = new DateTime(2023, 6, 17), EndDate = new DateTime(2023, 6, 24) },
-                new Task { Name = "Разработка документации", StartDate = new DateTime(2023, 6, 24), EndDate = new DateTime(2023, 7, 1) },
-                new Task { Name = "Общая схема", StartDate = new DateTime(2023, 7, 1), EndDate = new DateTime(2023, 12, 1) },
-                new Task { Name = "Разработка модуля 1", StartDate = new DateTime(2023, 12, 1), EndDate = new DateTime(2024, 1, 5) },
-                new Task { Name = "Разработка модуля 2", StartDate = new DateTime(2024, 1, 5), EndDate = new DateTime(2024, 2, 2) },
-                new Task { Name = "Разработка модуля 3", StartDate = new DateTime(2024, 2, 2), EndDate = new DateTime(2024, 3, 9) },
-                new Task { Name = "Ввод данных", StartDate = new DateTime(2024, 3, 9), EndDate = new DateTime(2024, 3, 16) },
-                new Task { Name = "Анализ данных", StartDate = new DateTime(2024, 3, 16), EndDate = new DateTime(2024, 3, 23) },
-                new Task { Name = "Отчет по разработке", StartDate = new DateTime(2024, 3, 23), EndDate = new DateTime(2024, 3, 30) },
-                new Task { Name = "Внедрение", StartDate = new DateTime(2024, 3, 30), EndDate = new DateTime(2024, 4, 6) },
-                new Task { Name = "Итоговый отчет", StartDate = new DateTime(2024, 4, 6), EndDate = new DateTime(2024, 4, 13) },
-                new Task { Name = "Итоговое собрание", StartDate = new DateTime(2024, 4, 13), EndDate = new DateTime(2024, 4, 20) }
-            };
+            UpdateGanttChart();
+        }
 
+        private void AddTaskButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (DateTime.TryParse(StartDateTextBox.Text, out DateTime startDate) &&
+                DateTime.TryParse(EndDateTextBox.Text, out DateTime endDate) &&
+                !string.IsNullOrWhiteSpace(TaskNameTextBox.Text))
+            {
+                var newTask = new Taskg
+                {
+                    Name = TaskNameTextBox.Text,
+                    StartDate = startDate,
+                    EndDate = endDate
+                };
+                tasks.Add(newTask);
+                AddTaskToChart(newTask);
+            }
+            else
+            {
+                MessageBox.Show("Пожалуйста, введите корректные данные задачи.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void UpdateGanttChart()
+        {
             var series = new SeriesCollection();
 
             foreach (var task in tasks)
             {
-                var taskSeries = new RowSeries
-                {
-                    Title = task.Name,
-                    Values = new ChartValues<DateTimePoint>
-                    {
-                        new DateTimePoint(task.StartDate, tasks.IndexOf(task)),
-                        new DateTimePoint(task.EndDate, tasks.IndexOf(task))
-                    }
-                };
-                series.Add(taskSeries);
+                AddTaskToChart(task);
             }
 
             GanttChart.Series = series;
-
-            GanttChart.AxisX[0].LabelFormatter = value => new DateTime((long)value).ToString("dd MMM");
             GanttChart.AxisY[0].Labels = tasks.Select(t => t.Name).ToArray();
+        }
+
+        private void AddTaskToChart(Taskg task)
+        {
+            var taskSeries = new RowSeries
+            {
+                Title = task.Name,
+                Values = new ChartValues<DateTimePoint>
+            {
+                new DateTimePoint(task.StartDate, tasks.IndexOf(task)),
+                new DateTimePoint(task.EndDate, tasks.IndexOf(task))
+            }
+            };
+            GanttChart.Series.Add(taskSeries);
+        }
+
+        public class Taskg
+        {
+            public int Id { get; set; }
+            public string Name { get; set; }
+            public DateTime StartDate { get; set; }
+            public DateTime EndDate { get; set; }
         }
     }
 }

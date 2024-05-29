@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:DuftPunk"
         mc:Ignorable="d"
         Title="ProjectManager" Height="450" Width="800">
-    <Window.Resources>
+    <!--<Window.Resources>
         <Style TargetType="Button" x:Key="ButtonStyle">
             <Setter Property="Margin" Value="5"/>
             <Setter Property="Padding" Value="10"/>
@@ -84,5 +84,5 @@
             <Button Content="Kanban Board Project" Click="OpenKanbanBoardWindow" Style="{StaticResource ButtonStyle}" Margin="0,0,0,20"/>
             <Button Content="Add Task" Click="AddTask_Click" Style="{StaticResource ButtonStyle}" Margin="0,0,0,20"/>
         </StackPanel>
-    </Grid>
+    </Grid>-->
 </Window>

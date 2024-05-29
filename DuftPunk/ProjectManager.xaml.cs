@@ -21,50 +21,50 @@ namespace DuftPunk
     /// </summary>
     public partial class ProjectManager : Window
     {
-        public class Project
-        {
-            public int Id { get; set; }
-            public string Name { get; set; }
-            public string Type { get; set; }
-        }
+        //public class Project
+        //{
+        //    public int Id { get; set; }
+        //    public string Name { get; set; }
+        //    public string Type { get; set; }
+        //}
         public ProjectManager()
         {
             InitializeComponent();
-            LoadProjects();
+            //LoadProjects();
         }
 
-        private void OpenScrumWindow(object sender, RoutedEventArgs e)
-        {
-            var scrumProject = new Project { Name = "Scrum Project", Type = "Scrum" };
-            SaveProjectToDatabase(scrumProject);
-            var window = new ScrumWindow(scrumProject);
-            window.Show();
-            this.Close();
-        }
+        //private void OpenScrumWindow(object sender, RoutedEventArgs e)
+        //{
+        //    var scrumProject = new Project { Name = "Scrum Project", Type = "Scrum" };
+        //    SaveProjectToDatabase(scrumProject);
+        //    var window = new ScrumWindow(scrumProject);
+        //    window.Show();
+        //    this.Close();
+        //}
 
-        private void OpenGanttChartWindow(object sender, RoutedEventArgs e)
-        {
-            var ganttProject = new Project { Name = "Gantt Chart Project", Type = "Gantt" };
-            SaveProjectToDatabase(ganttProject);
-            var window = new GanttChartWindow(ganttProject);
-            window.Show();
-            this.Close();
-        }
+        //private void OpenGanttChartWindow(object sender, RoutedEventArgs e)
+        //{
+        //    var ganttProject = new Project { Name = "Gantt Chart Project", Type = "Gantt" };
+        //    SaveProjectToDatabase(ganttProject);
+        //    var window = new GanttChartWindow(ganttProject);
+        //    window.Show();
+        //    this.Close();
+        //}
 
-        private void OpenKanbanBoardWindow(object sender, RoutedEventArgs e)
-        {
-            var kanbanProject = new Project { Name = "Kanban Board Project", Type = "Kanban" };
-            SaveProjectToDatabase(kanbanProject);
-            var window = new KanbanBoardWindow(kanbanProject);
-            window.Show();
-            this.Close();
-        }
+        //private void OpenKanbanBoardWindow(object sender, RoutedEventArgs e)
+        //{
+        //    var kanbanProject = new Project { Name = "Kanban Board Project", Type = "Kanban" };
+        //    SaveProjectToDatabase(kanbanProject);
+        //    var window = new KanbanBoardWindow(kanbanProject);
+        //    window.Show();
+        //    this.Close();
+        //}
 
-        private void AddTask_Click(object sender, RoutedEventArgs e)
-        {
-            ProjectSetupWindow projectSetupWindow = new ProjectSetupWindow();
-            projectSetupWindow.ShowDialog();
-        }
+        //private void AddTask_Click(object sender, RoutedEventArgs e)
+        //{
+        //    ProjectSetupWindow projectSetupWindow = new ProjectSetupWindow();
+        //    projectSetupWindow.ShowDialog();
+        //}
 
         //private void SaveProjectToDatabase(Project project)
         //{

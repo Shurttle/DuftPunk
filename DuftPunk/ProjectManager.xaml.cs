@@ -21,12 +21,12 @@ namespace DuftPunk
     /// </summary>
     public partial class ProjectManager : Window
     {
-        //public class Project
-        //{
-        //    public int Id { get; set; }
-        //    public string Name { get; set; }
-        //    public string Type { get; set; }
-        //}
+        public class Project
+        {
+            public int Id { get; set; }
+            public string Name { get; set; }
+            public string Type { get; set; }
+        }
         public ProjectManager()
         {
             InitializeComponent();
@@ -68,7 +68,7 @@ namespace DuftPunk
 
         //private void SaveProjectToDatabase(Project project)
         //{
-        //    var connectionString = "your_connection_string"; // Укажите вашу строку подключения к БД
+        //    var connectionString = "";
         //    using (var connection = new MySqlConnection(connectionString))
         //    {
         //        connection.Open();

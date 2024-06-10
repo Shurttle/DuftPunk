@@ -25,7 +25,7 @@ namespace DuftPunk
         {
             ProjectSetupWindow projectWindow = new ProjectSetupWindow();
             projectWindow.ShowDialog();
-            this.Close();
+
         }       
     }
 }

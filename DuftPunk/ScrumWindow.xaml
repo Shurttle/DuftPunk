@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:DuftPunk"
         mc:Ignorable="d"
         Title="ScrumWindow" Height="450" Width="800">
-     <Window.Resources>
+    <Window.Resources>
         <Style TargetType="Button" x:Key="ButtonStyle">
             <Setter Property="Margin" Value="5"/>
             <Setter Property="Padding" Value="10"/>
@@ -26,7 +26,7 @@
             </Setter>
             <Style.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="#8012b3"/>
+                    <Setter Property="Background" Value="#A315D4"/>
                 </Trigger>
             </Style.Triggers>
         </Style>
@@ -52,29 +52,31 @@
             </Setter>
         </Style>
 
-        <Style TargetType="ListBoxItem" x:Key="ScrumTaskItemStyle">
+        <!--<Style TargetType="ListBoxItem" x:Key="ScrumTaskItemStyle">
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="ListBoxItem">
                         <Grid>
-                            <Rectangle x:Name="TaskRect" Width="120" Height="40" Fill="LightBlue" Stroke="Black" StrokeThickness="1" RadiusX="8" RadiusY="8" />
+                            <Border x:Name="TaskRect" Background="LightBlue" BorderBrush="Black" BorderThickness="1" CornerRadius="8">
+                                <TextBlock Text="{Binding TaskName}" VerticalAlignment="Center" HorizontalAlignment="Center" FontWeight="Bold" Foreground="Black"/>
+                            </Border>
                             <CheckBox x:Name="TaskDoneCheckBox" Content="Done" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,5,0" Visibility="Hidden"/>
-                            <TextBlock Text="{Binding TaskName}" VerticalAlignment="Center" HorizontalAlignment="Center" FontWeight="Bold" Foreground="Black"/>
                         </Grid>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="TaskRect" Property="Stroke" Value="DodgerBlue"/>
+                                <Setter TargetName="TaskRect" Property="BorderBrush" Value="DodgerBlue"/>
                             </Trigger>
                             <DataTrigger Binding="{Binding IsTaskDone}" Value="True">
                                 <Setter TargetName="TaskDoneCheckBox" Property="Visibility" Value="Visible" />
-                                <Setter TargetName="TaskRect" Property="Fill" Value="LightGreen" />
+                                <Setter TargetName="TaskRect" Property="Background" Value="LightGreen" />
                             </DataTrigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
-        </Style>
+        </Style>-->
     </Window.Resources>
+
 
     <StackPanel Margin="10">
         <Button x:Name="backButton" Content="Назад" Style="{StaticResource ButtonStyle}" Width="100" Height="30" Margin="10" HorizontalAlignment="Left" Click="BackButton_Click"/>
@@ -92,7 +94,7 @@
 
         <TabControl Margin="10">
             <TabItem Header="ToDo">
-                <ListBox x:Name="todoList" Height="250" Style="{StaticResource ListBoxStyle}" ItemContainerStyle="{StaticResource ScrumTaskItemStyle}">
+                <ListBox x:Name="todoList" Height="250" Style="{StaticResource ListBoxStyle}">
                     <ListBox.ContextMenu>
                         <ContextMenu>
                             <MenuItem Header="Удалить" Click="DeleteTask_Click"/>
@@ -102,7 +104,7 @@
                 </ListBox>
             </TabItem>
             <TabItem Header="In Progress">
-                <ListBox x:Name="inProgressList" Height="250" Style="{StaticResource ListBoxStyle}" ItemContainerStyle="{StaticResource ScrumTaskItemStyle}">
+                <ListBox x:Name="inProgressList" Height="250" Style="{StaticResource ListBoxStyle}">
                     <ListBox.ContextMenu>
                         <ContextMenu>
                             <MenuItem Header="Удалить" Click="DeleteTask_Click"/>
@@ -112,7 +114,7 @@
                 </ListBox>
             </TabItem>
             <TabItem Header="Done">
-                <ListBox x:Name="doneList" Height="250" Style="{StaticResource ListBoxStyle}" ItemContainerStyle="{StaticResource ScrumTaskItemStyle}">
+                <ListBox x:Name="doneList" Height="250" Style="{StaticResource ListBoxStyle}">
                     <ListBox.ContextMenu>
                         <ContextMenu>
                             <MenuItem Header="Удалить" Click="DeleteTask_Click"/>

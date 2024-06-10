@@ -1,18 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+
 
 namespace DuftPunk
 {
@@ -25,15 +14,14 @@ namespace DuftPunk
         public ObservableCollection<Task> InProgressList { get; set; }
         public ObservableCollection<Task> DoneList { get; set; }
 
-        //private ProjectManager project;
-        public ScrumWindow(/*ProjectManager project*/)
+        public ScrumWindow()
         {
             InitializeComponent();
             InitializeLists();
-            //this.project = project;
+
         }
 
-           private void InitializeLists()
+        private void InitializeLists()
         {
             ToDoList = new ObservableCollection<Task>();
             InProgressList = new ObservableCollection<Task>();
@@ -59,15 +47,19 @@ namespace DuftPunk
 
         private void DeleteTask_Click(object sender, RoutedEventArgs e)
         {
-            var item = (sender as MenuItem).DataContext as Task;
-            var list = GetParentListBox(sender as MenuItem);
+            var menuItem = sender as MenuItem;
+            var item = menuItem.DataContext as Task;
+            var list = GetParentListBox(menuItem);
             if (item != null && list != null)
+            {
                 list.Remove(item);
+            }
         }
 
         private void MoveTaskInProgress_Click(object sender, RoutedEventArgs e)
         {
-            var item = (sender as MenuItem).DataContext as Task;
+            var menuItem = sender as MenuItem;
+            var item = menuItem.DataContext as Task;
             if (item != null)
             {
                 ToDoList.Remove(item);
@@ -77,7 +69,8 @@ namespace DuftPunk
 
         private void MoveTaskDone_Click(object sender, RoutedEventArgs e)
         {
-            var item = (sender as MenuItem).DataContext as Task;
+            var menuItem = sender as MenuItem;
+            var item = menuItem.DataContext as Task;
             if (item != null)
             {
                 InProgressList.Remove(item);
@@ -87,33 +80,25 @@ namespace DuftPunk
 
         private ObservableCollection<Task> GetParentListBox(MenuItem menuItem)
         {
-            if (menuItem.Parent is ContextMenu contextMenu)
-            {
-                if (contextMenu.PlacementTarget is ListBox listBox)
-                {
-                    if (listBox.ItemsSource is ObservableCollection<Task> list)
-                    {
-                        return list;
-                    }
-                }
-            }
-            return null;
+            var contextMenu = menuItem.Parent as ContextMenu;
+            var listBox = contextMenu.PlacementTarget as ListBox;
+            return listBox.ItemsSource as ObservableCollection<Task>;
         }
+
         private void BackButton_Click(object sender, RoutedEventArgs e)
         {
             ProjectSetupWindow projectSetupWindow = new ProjectSetupWindow();
             projectSetupWindow.Show();
             this.Close();
         }
-    }    
+    }
 
     public class Task
     {
         public string TaskName { get; set; }
-        public bool IsTaskDone { get; set; }      
-        public string Name { get; set; }
-
+        public bool IsTaskDone { get; set; }
     }
 }
-    
+
+
 

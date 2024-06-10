@@ -40,6 +40,7 @@ namespace DuftPunk.DBduftpunk
             }
         }
 
+
         public void CloseConnection()
         {
             try
@@ -91,6 +92,5 @@ namespace DuftPunk.DBduftpunk
                 return -1;
             }
         }
-
     }
 }

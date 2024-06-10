@@ -43,9 +43,9 @@
         </Border>
 
         <StackPanel Grid.Row="1" HorizontalAlignment="Center" Margin="10">
-            <Button Content="Scrum" Style="{StaticResource MethodologyButtonStyle}" Click="ScrumButton_Click"/>
-            <Button Content="Gantt Chart" Style="{StaticResource MethodologyButtonStyle}" Click="GanttChartButton_Click"/>
-            <Button Content="Kanban" Style="{StaticResource MethodologyButtonStyle}" Click="KanbanButton_Click"/>
+            <Button Content="Scrum" Style="{StaticResource MethodologyButtonStyle}" Click="ScrumButton_Click" Width="66" Height="27"/>
+            
+            <Button Content="Kanban" Style="{StaticResource MethodologyButtonStyle}" Click="KanbanButton_Click" Height="27"/>
         </StackPanel>
     </Grid>
 </Window>

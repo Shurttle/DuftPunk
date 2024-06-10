@@ -1,6 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 
 
 namespace DuftPunk
@@ -11,25 +12,29 @@ namespace DuftPunk
     public partial class ScrumWindow : Window
     {
         public ObservableCollection<Task> ToDoList { get; set; }
-        public ObservableCollection<Task> InProgressList { get; set; }
+        public ObservableCollection<Task> ProgressList { get; set; }
         public ObservableCollection<Task> DoneList { get; set; }
+
+        public Task ToDoItem { get;set;}
+        public Task ProgressItem { get; set; }
+        public Task DoneItem { get; set; }
 
         public ScrumWindow()
         {
             InitializeComponent();
+            DataContext = this;
             InitializeLists();
-
         }
 
         private void InitializeLists()
         {
             ToDoList = new ObservableCollection<Task>();
-            InProgressList = new ObservableCollection<Task>();
+            ProgressList = new ObservableCollection<Task>();
             DoneList = new ObservableCollection<Task>();
 
-            todoList.ItemsSource = ToDoList;
-            inProgressList.ItemsSource = InProgressList;
-            doneList.ItemsSource = DoneList;
+            todoList.SetBinding(ListView.ItemsSourceProperty, "ToDoList");
+            inProgressList.SetBinding(ListView.ItemsSourceProperty, "ProgressList");
+            doneList.SetBinding(ListView.ItemsSourceProperty, "DoneList");
         }
 
         private void AddTaskButton_Click(object sender, RoutedEventArgs e)
@@ -47,33 +52,38 @@ namespace DuftPunk
 
         private void DeleteTask_Click(object sender, RoutedEventArgs e)
         {
-            var menuItem = sender as MenuItem;
-            var item = menuItem.DataContext as Task;
-            var list = GetParentListBox(menuItem);
-            if (item != null && list != null)
-            {
-                list.Remove(item);
-            }
+            string tag = ((MenuItem)sender).Tag.ToString();
+            if (tag == "todo" && ToDoItem != null)
+                ToDoList.Remove(ToDoItem);
+            else if (tag == "progress" && ProgressItem != null)
+                ProgressList.Remove(ProgressItem);
+            else if (tag == "done" && DoneItem != null)
+                DoneList.Remove(DoneItem);
+            /*   var menuItem = sender as MenuItem;
+               var item = menuItem.DataContext as Task;
+               var list = GetParentListBox(menuItem);
+               if (DoneItem != null && list != null)
+               {
+                   list.Remove(item);
+               }*/
         }
 
         private void MoveTaskInProgress_Click(object sender, RoutedEventArgs e)
         {
-            var menuItem = sender as MenuItem;
-            var item = menuItem.DataContext as Task;
-            if (item != null)
+            if (ToDoItem != null)
             {
+                var item = ToDoItem;
                 ToDoList.Remove(item);
-                InProgressList.Add(item);
+                ProgressList.Add(item);
             }
         }
 
         private void MoveTaskDone_Click(object sender, RoutedEventArgs e)
         {
-            var menuItem = sender as MenuItem;
-            var item = menuItem.DataContext as Task;
-            if (item != null)
+            if (ProgressItem != null)
             {
-                InProgressList.Remove(item);
+                var item = ProgressItem;
+                ProgressList.Remove(item);
                 DoneList.Add(item);
             }
         }

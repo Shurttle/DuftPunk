@@ -94,30 +94,30 @@
 
         <TabControl Margin="10">
             <TabItem Header="ToDo">
-                <ListBox x:Name="todoList" Height="250" Style="{StaticResource ListBoxStyle}">
+                <ListBox x:Name="todoList" SelectedItem="{Binding ToDoItem}" Height="250" Style="{StaticResource ListBoxStyle}">
                     <ListBox.ContextMenu>
                         <ContextMenu>
-                            <MenuItem Header="Удалить" Click="DeleteTask_Click"/>
+                            <MenuItem Tag="todo" Header="Удалить" Click="DeleteTask_Click"/>
                             <MenuItem Header="Переместить в In Progress" Click="MoveTaskInProgress_Click"/>
                         </ContextMenu>
                     </ListBox.ContextMenu>
                 </ListBox>
             </TabItem>
             <TabItem Header="In Progress">
-                <ListBox x:Name="inProgressList" Height="250" Style="{StaticResource ListBoxStyle}">
+                <ListBox x:Name="inProgressList" SelectedItem="{Binding ProgressItem}"  Height="250" Style="{StaticResource ListBoxStyle}">
                     <ListBox.ContextMenu>
                         <ContextMenu>
-                            <MenuItem Header="Удалить" Click="DeleteTask_Click"/>
+                            <MenuItem Tag="progress" Header="Удалить" Click="DeleteTask_Click"/>
                             <MenuItem Header="Переместить в Done" Click="MoveTaskDone_Click"/>
                         </ContextMenu>
                     </ListBox.ContextMenu>
                 </ListBox>
             </TabItem>
             <TabItem Header="Done">
-                <ListBox x:Name="doneList" Height="250" Style="{StaticResource ListBoxStyle}">
+                <ListBox x:Name="doneList" SelectedItem="{Binding DoneItem}"  Height="250" Style="{StaticResource ListBoxStyle}">
                     <ListBox.ContextMenu>
                         <ContextMenu>
-                            <MenuItem Header="Удалить" Click="DeleteTask_Click"/>
+                            <MenuItem Tag="done" Header="Удалить" Click="DeleteTask_Click"/>
                         </ContextMenu>
                     </ListBox.ContextMenu>
                 </ListBox>
